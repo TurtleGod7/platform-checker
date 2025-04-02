@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="platform-checker",
-    version="0.2.2",
+    version="0.2.3",
     packages=find_packages(),
     author="Aditya Sriram",
     author_email="adisriram7777@gmail.com",
