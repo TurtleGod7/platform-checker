@@ -1,0 +1,60 @@
+name: Auto Version Bump & Publish to PyPI
+
+on:
+  push:
+    branches:
+      - main  # Run this workflow on every push to the main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 🛠 Checkout repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # 🐍 Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+
+      # 📦 Install dependencies
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install build twine pytest bump2version
+
+      # 🔍 Determine the Version Bump Type (Patch, Minor, Major)
+      - name: Detect Bump Type
+        id: bump_type
+        run: |
+          if git log -1 --pretty=%B | grep -qE '\#major'; then
+            echo "bump_type=major" >> $GITHUB_ENV
+          elif git log -1 --pretty=%B | grep -qE '\#minor'; then
+            echo "bump_type=minor" >> $GITHUB_ENV
+          else
+            echo "bump_type=patch" >> $GITHUB_ENV
+          fi
+
+      # 🔼 Bump the Version
+      - name: Bump Version & Push Tag
+        run: |
+          bump2version ${{ env.bump_type }}
+          git push --follow-tags
+
+      # 🧪 Run Tests
+      - name: Run Tests
+        run: pytest tests/
+
+      # 📦 Build the Package
+      - name: Build Package
+        run: python -m build
+
+      # 🚀 Publish to PyPI
+      - name: Publish to PyPI
+        env:
+          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        run: twine upload dist/*
