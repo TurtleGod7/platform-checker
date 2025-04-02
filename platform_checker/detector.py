@@ -29,12 +29,12 @@ def is_posix() -> bool:
 
 def is_arm() -> bool:
     """Detect if the system is running on an ARM architecture."""
-    return "arm" in uname.machine().lower() or "aarch" in uname.machine().lower()
+    return "arm" in uname().machine.lower() or "aarch" in uname().machine.lower()
 
 def is_x86() -> bool:
     """Detect if the system is running on an x86 architecture."""
-    return uname.machine().lower() in ["x86_64", "amd64", "i386", "i686"]
+    return uname().machine.lower() in ["x86_64", "amd64", "i386", "i686"]
 
 def network_name() -> str:
     """Get the network name of the machine."""
-    return uname.node()
+    return uname().node

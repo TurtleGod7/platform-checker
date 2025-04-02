@@ -23,3 +23,8 @@ def test_is_arm():
 
 def test_is_x86():
     assert isinstance(detector.is_x86(), bool)
+
+def test_network_name():
+    network = detector.network_name()
+    assert isinstance(network, str)
+    assert len(network) > 0  # Ensure it's not an empty string
