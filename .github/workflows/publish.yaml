@@ -5,6 +5,9 @@ on:
     branches:
       - main  # Run this workflow on every push to the main branch
 
+permissions:
+  contents: write  # 🔹 Give permissions to push commits
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -44,6 +47,11 @@ jobs:
             git config --global user.email "github-actions@github.com"
             git config --global user.name "GitHub Actions"
       
+      # Authenticate Github Actions to push changes
+      - name: Authenticate with GitHub
+        run: |
+            git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+    
       # 🔼 Bump the Version
       - name: Bump Version & Push Tag
         run: |
