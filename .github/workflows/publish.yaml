@@ -37,7 +37,13 @@ jobs:
           else
             echo "bump_type=patch" >> $GITHUB_ENV
           fi
-
+        
+      # Configures email and name for bump commits
+      - name: Configure Git User
+        run: |
+            git config --global user.email "github-actions@github.com"
+            git config --global user.name "GitHub Actions"
+      
       # 🔼 Bump the Version
       - name: Bump Version & Push Tag
         run: |
