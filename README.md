@@ -22,11 +22,10 @@ pip install platform-checker
 Import and use the package in your Python code:
 
 ```python
-from platform_checker import PlatformChecker
+import platform_checker
 
-checker = PlatformChecker()
-report = checker.generate_report()
-print(report)
+if is_windows():
+    print("Your OS is Windows!")
 ```
 
 ## Contributing
